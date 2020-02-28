@@ -1,0 +1,37 @@
+rundy:
+
+  - pytanie: Przedmioty w szkole
+    odpowiedzi:
+      - odp: Matematyka
+        pkt: 100
+      - odp: Język polski
+        pkt: 80
+      - odp: Historia
+        pkt: 50
+      - odp: WF
+        pkt: 10
+
+  - pytanie: Zwierzątko
+    odpowiedzi:
+      - odp: Pies
+        pkt: 80
+      - odp: Kot
+        pkt: 10
+      - odp: Rybka
+        pkt: 5
+
+  - pytanie: Więcej niż jedno zwierzę.
+    odpowiedzi:
+      - odp: Owca
+        pkt: 99
+      - odp: Lama
+        pkt: 87
+
+  - pytanie: Po wodzie pływa i kaczka się nazywa.
+    odpowiedzi:
+      - odp: Gęś
+        pkt: 120
+      - odp: Kaczka
+        pkt: 60
+      - odp: Kuropatwa
+        pkt: 2

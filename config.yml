@@ -1,0 +1,25 @@
+grafika:
+  ekran_powitalny: dane/ekran_powitalny.png
+  tlo: dane/tlo.png
+
+dzwieki:
+  bledna_odpowiedz: dane/bledna_odpowiedz.wav
+  dobra_odpowiedz: dane/dobra_odpowiedz.wav
+
+muzyka:
+  muzyka_na_start: dane/muzyka_na_start.mp3
+
+czcionki:
+  podstawowa:
+    plik: dane/font.ttf
+    rozmiar: 20
+
+  punkty_druzyn:
+    plik: dane/font.ttf
+    rozmiar: 40
+
+  blad:
+    plik: dane/font.ttf
+    rozmiar: 60
+
+pytania: dane/pytania.yml

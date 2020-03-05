@@ -4,32 +4,26 @@
 import pygame, sys
 from pygame.locals import *
 from konfiguracja import dane, wyswietlacz
-from stan import *
+from stan import stan
 
 # TODO: przenieść do konfiguracji kolory, położenia, klawisze
 BLACK=(0,0,0)
 ORANGE=(255,200,0)
 
-KLAWISZE_ODPOWIEDZI=[K_1,K_2,K_3,K_4,K_5,K_6,K_7,K_8]
-KLAWISZ_KONIEC_GRY=K_q
-#KLAWISZ_FINAL=K_0
-#KLAWISZ_RUNDY=K_9
+KLAWISZE_ODPOWIEDZI=[K_1,K_2,K_3,K_4,K_5,K_6,K_7,K_8,K_9]
+KLAWISZ_KONIEC_GRY=K_ESCAPE
 KLAWISZ_NASTEPNA_RUNDA=K_RIGHT
 KLAWISZ_POPRZEDNIA_RUNDA=K_LEFT
-KLAWISZ_BLAD_0=K_z
-KLAWISZ_BLAD_0_COFNIJ=K_x
-KLAWISZ_BLAD_1=K_n
-KLAWISZ_BLAD_1_COFNIJ=K_m
-KLAWISZ_PUNKTY_NALICZ_0=K_o
-KLAWISZ_PUNKTY_ZABIERZ_0=K_k
-KLAWISZ_PUNKTY_NALICZ_1=K_p
-KLAWISZ_PUNKTY_ZABIERZ_1=K_l
+KLAWISZ_DRUZYNA_0=K_a
+KLAWISZ_DRUZYNA_1=K_s
+KLAWISZ_BLAD=K_b
+KLAWISZ_COFNIJ_CZYNNOSC=K_BACKSPACE
 
-#z/x  - dodanie/odjêcie b³êdu dru¿ynie po lewej
-#n/m - dodanie/dojêcie b³êdu dru¿ynie po prawej
-#o/k - dodanie sumy punktow do druzyny po lewej/ odjêcie
-#p/l - dodanie sumy punktow do druzyny po prawej/ dojêcie
-#9 i 0 - prze³¹czanie pomiêdzy etapami gry ( 9-powrot , 0 - nastêpny etap)
+#z/x  - dodanie/odjêcie błędu drużynie po lewej
+#n/m - dodanie/dojêcie błędu drużynie po prawej
+#o/k - dodanie sumy punktow do druzyny po lewej/ odjęcie
+#p/l - dodanie sumy punktow do druzyny po prawej/ dojęcie
+#9 i 0 - przełączanie pomiêdzy etapami gry ( 9-powrot , 0 - następny etap)
 
 POLOZENIE_Y0=100
 ODSTEP_Y=40
@@ -40,6 +34,8 @@ POLOZENIE_SUMA_X=800
 POLOZENIE_SUMA_Y=800
 POLOZENIE_PUNKTY_DRUZYNA_0=(50,350)
 POLOZENIE_PUNKTY_DRUZYNA_1=(1050,350)
+POLOZENIE_BLEDY_DRUZYNA_0=(50,20)
+POLOZENIE_BLEDY_DRUZYNA_1=(1050,20)
 
 def biezace_odpowiedzi():
   return dane.rundy[stan.ktora_runda].odpowiedzi
@@ -77,7 +73,8 @@ def wyswietl_stan():
   pokaz_tekst(tresc=str(stan.liczniki_punktow[0]),xy=POLOZENIE_PUNKTY_DRUZYNA_0,czcionka=dane.fnt_punkty_druzyn)
   pokaz_tekst(tresc=str(stan.liczniki_punktow[1]),xy=POLOZENIE_PUNKTY_DRUZYNA_1,czcionka=dane.fnt_punkty_druzyn)
   # błędy
-  # TODO
+  pokaz_tekst(tresc=str(stan.liczniki_bledow[0]),xy=POLOZENIE_BLEDY_DRUZYNA_0,czcionka=dane.fnt_punkty_druzyn)
+  pokaz_tekst(tresc=str(stan.liczniki_bledow[1]),xy=POLOZENIE_BLEDY_DRUZYNA_1,czcionka=dane.fnt_punkty_druzyn)
 
   pygame.display.update()
 
@@ -90,24 +87,23 @@ def rundy_zwykle():
       if event.type == pygame.KEYDOWN:
         if event.key ==  KLAWISZ_KONIEC_GRY:
           koniec()
+        elif event.key == KLAWISZ_DRUZYNA_0:
+          stan.ustaw_biezaca_druzyne(0)
+        elif event.key == KLAWISZ_DRUZYNA_1:
+          stan.ustaw_biezaca_druzyne(1)
         elif event.key in KLAWISZE_ODPOWIEDZI:
           numer_odpowiedzi = KLAWISZE_ODPOWIEDZI.index(event.key)
-          if numer_odpowiedzi < len(biezace_odpowiedzi()):
-            stan.poprawna_odpowiedz(numer_odpowiedzi, biezace_odpowiedzi()[numer_odpowiedzi].punkty)
+          stan.poprawna_odpowiedz(numer_odpowiedzi)
+        elif event.key == KLAWISZ_BLAD:
+          stan.bledna_odpowiedz()
         elif event.key == KLAWISZ_NASTEPNA_RUNDA:
           if stan.ktora_runda < len(dane.rundy) - 1:
             stan.kolejna_runda()
         elif event.key == KLAWISZ_POPRZEDNIA_RUNDA:
           if stan.ktora_runda > 0:
             stan.poprzednia_runda()
-        elif event.key == KLAWISZ_PUNKTY_NALICZ_0:
-          stan.dodaj_punkty(0)
-        elif event.key == KLAWISZ_PUNKTY_NALICZ_1:
-          stan.dodaj_punkty(1)
-        elif event.key == KLAWISZ_PUNKTY_ZABIERZ_0:
-          stan.zabierz_punkty(0)
-        elif event.key == KLAWISZ_PUNKTY_ZABIERZ_1:
-          stan.zabierz_punkty(1)
+        elif event.key == KLAWISZ_COFNIJ_CZYNNOSC:
+          stan.przywroc_poprzedni_stan
         wyswietl_stan()
 
 def koniec():

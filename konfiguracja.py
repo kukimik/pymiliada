@@ -82,6 +82,12 @@ class Dane:
     rundy_dane_z_yaml=czytaj_plik_yaml(sciezka=dane_z_yaml[PYTANIA_SEKCJA])
     self.rundy=[ Runda(pytanie=runda[P_PYTANIE],odpowiedzi=[ Odpowiedz(tresc=odpowiedz[P_ODP],punkty=odpowiedz[P_PKT]) for odpowiedz in runda[P_ODPOWIEDZI] ]) for runda in rundy_dane_z_yaml[P_RUNDY] ]
 
+def liczba_odpowiedzi(numer_rundy):
+  return len(dane.rundy[numer_rundy].odpowiedzi)
+
+def liczba_punktow(numer_rundy,numer_odpowiedzi):
+  return dane.rundy[numer_rundy].odpowiedzi[numer_odpowiedzi].punkty
+
 def stworz_wyswietlacz():
   info = pygame.display.Info()
   #return pygame.display.set_mode((1024, 768), FULLSCREEN)

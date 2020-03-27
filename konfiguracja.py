@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import pygame, sys, yaml
+import pygame, sys, yaml, pygame.freetype
 from pygame.locals import *
 from os.path import normpath
 
@@ -74,9 +74,10 @@ class Dane:
     self.mus_muzyka_na_start=normpath(mus_sekcja[MUS_MUZYKA_NA_START])
 
     #czcionki
-    self.fnt_podstawowa=pygame.font.Font(normpath(fnt_sekcja[FNT_PODSTAWOWA][FNT_OPT_PLIK]),fnt_sekcja[FNT_PODSTAWOWA][FNT_OPT_ROZMIAR])
-    self.fnt_punkty_druzyn=pygame.font.Font(normpath(fnt_sekcja[FNT_PUNKTY_DRUZYN][FNT_OPT_PLIK]),fnt_sekcja[FNT_PUNKTY_DRUZYN][FNT_OPT_ROZMIAR])
-    self.fnt_blad=pygame.font.Font(normpath(fnt_sekcja[FNT_BLAD][FNT_OPT_PLIK]),fnt_sekcja[FNT_BLAD][FNT_OPT_ROZMIAR])
+    #self.fnt_podstawowa=pygame.font.Font(normpath(fnt_sekcja[FNT_PODSTAWOWA][FNT_OPT_PLIK]),fnt_sekcja[FNT_PODSTAWOWA][FNT_OPT_ROZMIAR])
+    self.fnt_podstawowa=pygame.freetype.Font(normpath(fnt_sekcja[FNT_PODSTAWOWA][FNT_OPT_PLIK]),fnt_sekcja[FNT_PODSTAWOWA][FNT_OPT_ROZMIAR])
+    self.fnt_punkty_druzyn=pygame.freetype.Font(normpath(fnt_sekcja[FNT_PUNKTY_DRUZYN][FNT_OPT_PLIK]),fnt_sekcja[FNT_PUNKTY_DRUZYN][FNT_OPT_ROZMIAR])
+    self.fnt_blad=pygame.freetype.Font(normpath(fnt_sekcja[FNT_BLAD][FNT_OPT_PLIK]),fnt_sekcja[FNT_BLAD][FNT_OPT_ROZMIAR])
 
     #rundy i finał
     rundy_dane_z_yaml=czytaj_plik_yaml(sciezka=dane_z_yaml[PYTANIA_SEKCJA])

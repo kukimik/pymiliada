@@ -11,15 +11,15 @@ muzyka:
 
 czcionki:
   podstawowa:
-    plik: dane/font.ttf
-    rozmiar: 20
-
-  punkty_druzyn:
-    plik: dane/font.ttf
+    plik: dane/bpdots.squares.otf #dane/font.ttf
     rozmiar: 40
 
-  blad:
-    plik: dane/font.ttf
+  punkty_druzyn:
+    plik: dane/bpdots.squares.otf
     rozmiar: 60
+
+  blad:
+    plik: dane/bpdots.squares.otf
+    rozmiar: 100
 
 pytania: dane/pytania.yml

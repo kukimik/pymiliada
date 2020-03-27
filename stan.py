@@ -77,9 +77,9 @@ class Stan:
     self.nowa_runda(self.ktora_runda-1)
 
   def zapisz_stan(self):
-    self.poprzedni_stan=copy.deepcopy(self)
+    print('zapisz_stan')
 
   def przywroc_poprzedni_stan(self):
-    self=self.poprzedni_stan
+    print('przywroc_poprzedni_stan')
 
 stan=Stan()

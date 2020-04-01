@@ -1,9 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import copy
 from konfiguracja import liczba_odpowiedzi, liczba_punktow
+import copy
 
+MAX_POZIOMY_UNDO=8000
 
 BLEDNA_ODPOWIEDZ='bledna_odpowiedz'
 POPRAWNA_ODPOWIEDZ='poprawna_odpowiedz'
@@ -21,7 +22,6 @@ class Stan:
     self.biezaca_druzyna=None
     self.wydarzenie=None
     self.koniec_rundy=False
-    self.poprzedni_stan=self
 
   def poprawna_odpowiedz(self,numer_odpowiedzi):
     if not (len(self.widoczne_odpowiedzi) > 0 and self.biezaca_druzyna is None):
@@ -77,9 +77,15 @@ class Stan:
     self.nowa_runda(self.ktora_runda-1)
 
   def zapisz_stan(self):
-    print('zapisz_stan')
+    poprzednie_stany.append(copy.deepcopy(vars(stan)))
+    if len(poprzednie_stany) > MAX_POZIOMY_UNDO:
+      del poprzednie_stany[0]
 
   def przywroc_poprzedni_stan(self):
-    print('przywroc_poprzedni_stan')
+    if poprzednie_stany:
+      opis_stanu=poprzednie_stany.pop()
+      for n, v in opis_stanu.items():
+        setattr(self, n, v)
 
 stan=Stan()
+poprzednie_stany=[]

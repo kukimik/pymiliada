@@ -3,17 +3,19 @@
 
 import pygame, pygame.freetype, sys
 from pygame.locals import *
-from konfiguracja import dane, wyswietlacz
+from konfiguracja import dane, wyswietlacz, odswiez_ekran
 from stan import stan
 
 # TODO:
-# - dodać oznaczenie, która drużyna jest aktywna (nazwy rodzin)
 # - dodać dźwięki
-# - dodać X-y za błędy
-# - przenieść do konfiguracji kolory, położenia, klawisze
-# - dodać UNDO
-# - runda finałowa
+# - dodać X-y za błędy w formie obrazków
+# - ładne tło i ustawienie współrzędnych obiektów
+# - dodać oznaczenie, która drużyna jest aktywna (nazwy rodzin)
 # - dodać aktualne pytanie i numer rundy (opcjonalnie - opcja w config.yml)
+# - przenieść do konfiguracji kolory, położenia, klawisze
+# - rozmiar ekranu w config.yml
+# - runda finałowa
+
 
 KOLOR_CZARNY=(0,0,0)
 KOLOR_TEKSTU=(70,230,100)
@@ -48,8 +50,6 @@ def biezace_odpowiedzi():
 
 def pokaz_tekst(tresc,xy,czcionka=dane.fnt_podstawowa,kolor=KOLOR_TEKSTU):
   czcionka.render_to(wyswietlacz, xy, tresc.upper(), kolor)
-  #text = czcionka.render(text=tresc.upper(),fgcolor=kolor)
-  #wyswietlacz.blit(text[0], xy)
 
 def pokaz_bledy(ktora_druzyna):
   czy_duzy_blad = stan.liczniki_bledow[(ktora_druzyna+1) % 2] == 3
@@ -67,7 +67,7 @@ def ekran_powitalny():
   czy_petla = True
   pygame.mixer.music.load(dane.mus_muzyka_na_start)
   wyswietlacz.blit(dane.img_ekran_powitalny, (0,0) )
-  pygame.display.update()
+  odswiez_ekran()
   pygame.mixer.music.play()
   while czy_petla:
     for event in pygame.event.get():
@@ -94,8 +94,7 @@ def wyswietl_stan():
   # błędy
   pokaz_bledy(ktora_druzyna=0)
   pokaz_bledy(ktora_druzyna=1)
-
-  pygame.display.update()
+  odswiez_ekran()
 
 def rundy_zwykle():
   wyswietl_stan()

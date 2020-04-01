@@ -74,7 +74,6 @@ class Dane:
     self.mus_muzyka_na_start=normpath(mus_sekcja[MUS_MUZYKA_NA_START])
 
     #czcionki
-    #self.fnt_podstawowa=pygame.font.Font(normpath(fnt_sekcja[FNT_PODSTAWOWA][FNT_OPT_PLIK]),fnt_sekcja[FNT_PODSTAWOWA][FNT_OPT_ROZMIAR])
     self.fnt_podstawowa=pygame.freetype.Font(normpath(fnt_sekcja[FNT_PODSTAWOWA][FNT_OPT_PLIK]),fnt_sekcja[FNT_PODSTAWOWA][FNT_OPT_ROZMIAR])
     self.fnt_punkty_druzyn=pygame.freetype.Font(normpath(fnt_sekcja[FNT_PUNKTY_DRUZYN][FNT_OPT_PLIK]),fnt_sekcja[FNT_PUNKTY_DRUZYN][FNT_OPT_ROZMIAR])
     self.fnt_blad=pygame.freetype.Font(normpath(fnt_sekcja[FNT_BLAD][FNT_OPT_PLIK]),fnt_sekcja[FNT_BLAD][FNT_OPT_ROZMIAR])
@@ -89,12 +88,23 @@ def liczba_odpowiedzi(numer_rundy):
 def liczba_punktow(numer_rundy,numer_odpowiedzi):
   return dane.rundy[numer_rundy].odpowiedzi[numer_odpowiedzi].punkty
 
-def stworz_wyswietlacz():
-  info = pygame.display.Info()
-  #return pygame.display.set_mode((1024, 768), FULLSCREEN)
-  return pygame.display.set_mode((info.current_w, info.current_h), FULLSCREEN)
+def stworz_ekran(rozmiar=None):
+  if rozmiar is None:
+    info = pygame.display.Info()
+    return pygame.display.set_mode((info.current_w, info.current_h), FULLSCREEN)
+  else:
+    return pygame.display.set_mode(rozmiar_ekranu)
+
+def odswiez_ekran():
+  ekran.blit(pygame.transform.smoothscale(wyswietlacz,pygame.display.get_surface().get_size()),(0,0))
+  pygame.display.update()
+
+rozmiar_ekranu=(1366,768)
 
 pygame.mixer.pre_init(44100, 16, 2, 4096)
 pygame.init()
+ekran = stworz_ekran(rozmiar_ekranu)
+wyswietlacz = pygame.Surface((1280,1024))
+
 dane = Dane(PLIK_KONFIGURACYJNY)
-wyswietlacz = stworz_wyswietlacz()
+

@@ -5,36 +5,7 @@ import pygame, sys, yaml, pygame.freetype
 from pygame.locals import *
 from os.path import normpath
 
-
 PLIK_KONFIGURACYJNY = "config.yml"
-
-IMG_SEKCJA='grafika'
-IMG_EKRAN_POWITALNY='ekran_powitalny'
-IMG_TLO='tlo'
-
-SND_SEKCJA='dzwieki'
-SND_BLEDNA_ODPOWIEDZ='bledna_odpowiedz'
-SND_DOBRA_ODPOWIEDZ='dobra_odpowiedz'
-
-MUS_SEKCJA='muzyka'
-MUS_MUZYKA_NA_START='muzyka_na_start'
-
-FNT_SEKCJA='czcionki'
-FNT_OPT_PLIK='plik'
-FNT_OPT_ROZMIAR='rozmiar'
-FNT_PODSTAWOWA='podstawowa'
-FNT_PUNKTY_DRUZYN='punkty_druzyn'
-FNT_BLAD='blad'
-
-
-PYTANIA_SEKCJA='pytania'
-
-P_RUNDY='rundy'
-P_FINAL='final'
-P_PYTANIE='pytanie'
-P_ODPOWIEDZI='odpowiedzi'
-P_ODP='odp'
-P_PKT='pkt'
 
 def czytaj_plik_yaml(sciezka):
   plik = open(normpath(sciezka), 'r')
@@ -57,30 +28,92 @@ class Dane:
 
     dane_z_yaml = czytaj_plik_yaml(sciezka=plik_konfiguracyjny)
 
-    img_sekcja=dane_z_yaml[IMG_SEKCJA]
-    snd_sekcja=dane_z_yaml[SND_SEKCJA]
-    mus_sekcja=dane_z_yaml[MUS_SEKCJA]
-    fnt_sekcja=dane_z_yaml[FNT_SEKCJA]
+    self.rozmiar_ekranu=tuple(dane_z_yaml['rozmiar_ekranu'])
 
     #obrazy
-    self.img_ekran_powitalny=pygame.image.load(normpath(img_sekcja[IMG_EKRAN_POWITALNY]))
-    self.img_tlo=pygame.image.load(normpath(img_sekcja[IMG_TLO]))
+    sekcja=dane_z_yaml['obrazy']
+    (self.img_ekran_powitalny,
+     self.img_tlo,
+    ) = (pygame.image.load(normpath(sekcja['ekran_powitalny'])),
+         pygame.image.load(normpath(sekcja['tlo'])),
+        )
 
     #dźwięki
-    self.snd_bledna_odpowiedz=pygame.mixer.Sound(normpath(snd_sekcja[SND_BLEDNA_ODPOWIEDZ]))
-    self.snd_dobra_odpowiedz=pygame.mixer.Sound(normpath(snd_sekcja[SND_DOBRA_ODPOWIEDZ]))
+    sekcja=dane_z_yaml['dzwieki']
+    (self.snd_bledna_odpowiedz,
+     self.snd_dobra_odpowiedz
+    ) = (pygame.mixer.Sound(normpath(sekcja['bledna_odpowiedz'])),
+         pygame.mixer.Sound(normpath(sekcja['dobra_odpowiedz'])),
+        )
 
     #muzyka
-    self.mus_muzyka_na_start=normpath(mus_sekcja[MUS_MUZYKA_NA_START])
+    sekcja=dane_z_yaml['muzyka']
+    self.mus_muzyka_na_start=normpath(sekcja['muzyka_na_start'])
 
     #czcionki
-    self.fnt_podstawowa=pygame.freetype.Font(normpath(fnt_sekcja[FNT_PODSTAWOWA][FNT_OPT_PLIK]),fnt_sekcja[FNT_PODSTAWOWA][FNT_OPT_ROZMIAR])
-    self.fnt_punkty_druzyn=pygame.freetype.Font(normpath(fnt_sekcja[FNT_PUNKTY_DRUZYN][FNT_OPT_PLIK]),fnt_sekcja[FNT_PUNKTY_DRUZYN][FNT_OPT_ROZMIAR])
-    self.fnt_blad=pygame.freetype.Font(normpath(fnt_sekcja[FNT_BLAD][FNT_OPT_PLIK]),fnt_sekcja[FNT_BLAD][FNT_OPT_ROZMIAR])
+    sekcja=dane_z_yaml['czcionki']
+    (self.fnt_podstawowa,
+     self.fnt_punkty_druzyn,
+    ) = (pygame.freetype.Font(normpath(sekcja['podstawowa']['plik']),sekcja['podstawowa']['rozmiar']),
+         pygame.freetype.Font(normpath(sekcja['punkty_druzyn']['plik']),sekcja['punkty_druzyn']['rozmiar']),
+        )
 
-    #rundy i finał
-    rundy_dane_z_yaml=czytaj_plik_yaml(sciezka=dane_z_yaml[PYTANIA_SEKCJA])
-    self.rundy=[ Runda(pytanie=runda[P_PYTANIE],odpowiedzi=[ Odpowiedz(tresc=odpowiedz[P_ODP],punkty=odpowiedz[P_PKT]) for odpowiedz in runda[P_ODPOWIEDZI] ]) for runda in rundy_dane_z_yaml[P_RUNDY] ]
+    (self.fnt_podstawowa.fgcolor,
+     self.fnt_punkty_druzyn.fgcolor,
+    ) = (tuple(sekcja['podstawowa']['kolor']),
+         tuple(sekcja['punkty_druzyn']['kolor']),
+        )
+
+    #współrzędne
+    sekcja=dane_z_yaml['wspolrzedne']
+    self.crd_bledy,self.crd_punkty_druzyn,self.crd_nazwy_druzyn=[None,None],[None,None],[None,None]
+
+    (self.crd_odpowiedzi_lp,
+     self.crd_odpowiedzi_haslo,
+     self.crd_odpowiedzi_punkty,
+     self.crd_odpowiedzi_odstep,
+     self.crd_bledy[0],
+     self.crd_bledy[1],
+     self.crd_bledy_odstep,
+     self.crd_punkty_druzyn[0],
+     self.crd_punkty_druzyn[1],
+     self.crd_punkty_suma_napis,
+     self.crd_punkty_suma_punkty,
+     self.crd_nazwy_druzyn[0],
+     self.crd_nazwy_druzyn[1],
+    ) = (tuple(sekcja['odpowiedzi']['lp']),
+         tuple(sekcja['odpowiedzi']['haslo']),
+         tuple(sekcja['odpowiedzi']['punkty']),
+               sekcja['odpowiedzi']['odstep'],
+         tuple(sekcja['bledy']['druzyna_0']),
+         tuple(sekcja['bledy']['druzyna_1']),
+               sekcja['bledy']['odstep'],
+         tuple(sekcja['punkty']['druzyna_0']),
+         tuple(sekcja['punkty']['druzyna_1']),
+         tuple(sekcja['punkty']['suma_napis']),
+         tuple(sekcja['punkty']['suma_punkty']),
+         tuple(sekcja['nazwy_druzyn']['druzyna_0']),
+         tuple(sekcja['nazwy_druzyn']['druzyna_1']),
+        )
+
+    #teksty
+    sekcja=dane_z_yaml['teksty']
+    (self.txt_suma,
+     self.txt_ukryte_haslo,
+     self.txt_ukryte_punkty,
+    ) = (sekcja['suma'],
+         sekcja['ukryte_punkty'],
+         sekcja['ukryte_haslo'],
+        )
+
+    #rundy, nazwy drużyn i finał
+    rundy_dane_z_yaml=czytaj_plik_yaml(sciezka=dane_z_yaml['pytania'])
+    self.nazwy_druzyn=(rundy_dane_z_yaml['nazwy_druzyn']['druzyna_0'],
+                       rundy_dane_z_yaml['nazwy_druzyn']['druzyna_1'])
+    self.rundy=[ Runda(pytanie=runda['pytanie'], \
+                       odpowiedzi=[ Odpowiedz(tresc=odpowiedz['odp'], punkty=odpowiedz['pkt']) \
+                                    for odpowiedz in runda['odpowiedzi'] ] ) \
+                 for runda in rundy_dane_z_yaml['rundy'] ]
 
 def liczba_odpowiedzi(numer_rundy):
   return len(dane.rundy[numer_rundy].odpowiedzi)
@@ -93,18 +126,14 @@ def stworz_ekran(rozmiar=None):
     info = pygame.display.Info()
     return pygame.display.set_mode((info.current_w, info.current_h), FULLSCREEN)
   else:
-    return pygame.display.set_mode(rozmiar_ekranu)
+    return pygame.display.set_mode(rozmiar)
 
 def odswiez_ekran():
   ekran.blit(pygame.transform.smoothscale(wyswietlacz,pygame.display.get_surface().get_size()),(0,0))
   pygame.display.update()
 
-rozmiar_ekranu=(1366,768)
-
 pygame.mixer.pre_init(44100, 16, 2, 4096)
 pygame.init()
-ekran = stworz_ekran(rozmiar_ekranu)
-wyswietlacz = pygame.Surface((1280,1024))
-
 dane = Dane(PLIK_KONFIGURACYJNY)
-
+ekran = stworz_ekran(dane.rozmiar_ekranu)
+wyswietlacz = pygame.Surface(dane.img_tlo.get_size())

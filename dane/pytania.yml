@@ -1,3 +1,7 @@
+nazwy_druzyn:
+  druzyna_0: Kowalscy
+  druzyna_1: Nowakowie
+
 rundy:
 
   - pytanie: Przedmioty w szkole
@@ -10,6 +14,16 @@ rundy:
         pkt: 50
       - odp: WF
         pkt: 10
+      - odp: xxx
+        pkt: 1
+      - odp: xxx
+        pkt: 1
+      - odp: xxx
+        pkt: 1
+      - odp: xxx
+        pkt: 1
+      - odp: xxx
+        pkt: 1
 
   - pytanie: Zwierzątko
     odpowiedzi:

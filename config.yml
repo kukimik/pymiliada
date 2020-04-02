@@ -1,4 +1,6 @@
-grafika:
+rozmiar_ekranu: [800,600]
+
+obrazy:
   ekran_powitalny: dane/ekran_powitalny.png
   tlo: dane/tlo.png
 
@@ -11,15 +13,40 @@ muzyka:
 
 czcionki:
   podstawowa:
-    plik: dane/bpdots.squares.otf #dane/font.ttf
+    plik: dane/bpdots.squares.otf
     rozmiar: 40
+    kolor: [70,230,100]
 
   punkty_druzyn:
     plik: dane/bpdots.squares.otf
     rozmiar: 60
-
-  blad:
-    plik: dane/bpdots.squares.otf
-    rozmiar: 100
+    kolor: [70,230,100]
 
 pytania: dane/pytania.yml
+
+wspolrzedne:
+  odpowiedzi:
+    lp: [235,100]
+    haslo: [275,100]
+    punkty: [960,100]
+    odstep: 70
+
+  bledy:
+    druzyna_0: [40,100]
+    druzyna_1: [1070,100]
+    odstep: 150
+
+  punkty:
+    druzyna_0: [35,355]
+    druzyna_1: [1110,355]
+    suma_napis: [800,720]
+    suma_punkty: [950,720]
+
+  nazwy_druzyn:
+    druzyna_0: [55,835]
+    druzyna_1: [875,835]
+
+teksty:
+  suma: SUMA
+  ukryte_haslo: ............................
+  ukryte_punkty: --

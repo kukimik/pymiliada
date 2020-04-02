@@ -10,15 +10,12 @@ from stan import stan
 # - dodać dźwięki
 # - dodać X-y za błędy w formie obrazków
 # - ładne tło i ustawienie współrzędnych obiektów
-# - dodać oznaczenie, która drużyna jest aktywna (nazwy rodzin)
-# - dodać aktualne pytanie i numer rundy (opcjonalnie - opcja w config.yml)
-# - przenieść do konfiguracji kolory, położenia, klawisze
-# - rozmiar ekranu w config.yml
+# - podświetlać aktywną drużynę
+# - wyświetlać aktualne pytanie i numer rundy (opcjonalnie - opcja w config.yml? wyświetlane na klawisz?)
 # - runda finałowa
-
+# - przenieść do konfiguracji klawisze
 
 KOLOR_CZARNY=(0,0,0)
-KOLOR_TEKSTU=(70,230,100)
 
 KLAWISZE_ODPOWIEDZI=[K_1,K_2,K_3,K_4,K_5,K_6,K_7,K_8,K_9]
 KLAWISZ_KONIEC_GRY=K_ESCAPE
@@ -29,39 +26,57 @@ KLAWISZ_DRUZYNA_1=K_s
 KLAWISZ_BLAD=K_b
 KLAWISZ_COFNIJ_CZYNNOSC=K_z
 
-POLOZENIE_Y0=100
-ODSTEP_Y=70
-POLOZENIE_LP_X=120
-POLOZENIE_HASLO_X=160
-POLOZENIE_PUNKTY_X=950
-
-POLOZENIE_SUMA_X=800
-POLOZENIE_SUMA_Y=900
-
-POLOZENIE_PUNKTY_DRUZYNA_0=(50,700)
-POLOZENIE_PUNKTY_DRUZYNA_1=(1050,700)
-POLOZENIE_BLEDY_X_DRUZYNA_0=40
-POLOZENIE_BLEDY_X_DRUZYNA_1=1070
-POLOZENIE_BLEDY_Y=100
-ODSTEP_BLEDY_Y=150
-
 def biezace_odpowiedzi():
   return dane.rundy[stan.ktora_runda].odpowiedzi
 
-def pokaz_tekst(tresc,xy,czcionka=dane.fnt_podstawowa,kolor=KOLOR_TEKSTU):
-  czcionka.render_to(wyswietlacz, xy, tresc.upper(), kolor)
+def pokaz_tekst(tresc,xy,czcionka=dane.fnt_podstawowa):
+  czcionka.render_to(wyswietlacz, xy, tresc.upper())
 
-def pokaz_bledy(ktora_druzyna):
-  czy_duzy_blad = stan.liczniki_bledow[(ktora_druzyna+1) % 2] == 3
-  x={0:POLOZENIE_BLEDY_X_DRUZYNA_0,1:POLOZENIE_BLEDY_X_DRUZYNA_1}[ktora_druzyna]
-  if czy_duzy_blad:
-    if stan.liczniki_bledow[ktora_druzyna] > 0:
-      pokaz_tekst('||',(x,POLOZENIE_BLEDY_Y+50),dane.fnt_blad)
-      pokaz_tekst('X',(x+10,POLOZENIE_BLEDY_Y+50+70),dane.fnt_blad)
-      pokaz_tekst('||',(x,POLOZENIE_BLEDY_Y+50+140),dane.fnt_blad)
-  else:
-    for i in range(stan.liczniki_bledow[ktora_druzyna]):
-      pokaz_tekst('X',(x,POLOZENIE_BLEDY_Y+i*ODSTEP_BLEDY_Y),dane.fnt_blad)
+def pokaz_punkty():
+  # suma punktów w bieżącej rundzie
+  pokaz_tekst(tresc=dane.txt_suma,xy=dane.crd_punkty_suma_napis)
+  pokaz_tekst(tresc=str(stan.punkty_biezace),xy=dane.crd_punkty_suma_punkty)
+  # punkty drużyn
+  for ktora_druzyna in [0,1]:
+    pokaz_tekst(tresc=str(stan.liczniki_punktow[ktora_druzyna]),xy=dane.crd_punkty_druzyn[ktora_druzyna],czcionka=dane.fnt_punkty_druzyn)
+
+def pokaz_aktywna_druzyne():
+  if stan.biezaca_druzyna is not None:
+    pokaz_tekst(tresc=dane.nazwy_druzyn[stan.biezaca_druzyna],xy=dane.crd_nazwy_druzyn[stan.biezaca_druzyna])
+
+def pokaz_odpowiedzi():
+  odpowiedzi=dane.rundy[stan.ktora_runda].odpowiedzi
+  crd_lp=list(dane.crd_odpowiedzi_lp)
+  crd_haslo=list(dane.crd_odpowiedzi_haslo)
+  crd_punkty=list(dane.crd_odpowiedzi_punkty)
+  for indeks,odpowiedz in enumerate(odpowiedzi):
+    pokaz_tekst(tresc=str(indeks+1), xy=tuple(crd_lp))
+    pokaz_tekst(tresc=odpowiedz.tresc if indeks in stan.widoczne_odpowiedzi else dane.txt_ukryte_punkty, xy=tuple(crd_haslo))
+    pokaz_tekst(tresc=str(odpowiedz.punkty) if indeks in stan.widoczne_odpowiedzi else dane.txt_ukryte_haslo, xy=tuple(crd_punkty))
+    crd_lp[1]+=dane.crd_odpowiedzi_odstep
+    crd_haslo[1]+=dane.crd_odpowiedzi_odstep
+    crd_punkty[1]+=dane.crd_odpowiedzi_odstep
+
+def pokaz_bledy():
+  for ktora_druzyna in [0,1]:
+    czy_duzy_blad = stan.liczniki_bledow[(ktora_druzyna+1) % 2] == 3 # jeśli druga drużyna zrobiła 3 błędy, to nasza drużyna ma albo brak błędów, albo jeden wielki błąd
+    polozenie=list(dane.crd_bledy[ktora_druzyna])
+    if czy_duzy_blad:
+      if stan.liczniki_bledow[ktora_druzyna] > 0:
+        pokaz_tekst('TODO',tuple(polozenie))
+    else:
+      for i in range(stan.liczniki_bledow[ktora_druzyna]):
+        pokaz_tekst('X',tuple(polozenie))
+        polozenie[1]+=dane.crd_bledy_odstep
+
+def wyswietl_stan():
+  wyswietlacz.fill(KOLOR_CZARNY)
+  wyswietlacz.blit(dane.img_tlo,(0,0))
+  pokaz_odpowiedzi()
+  pokaz_punkty()
+  pokaz_aktywna_druzyne()
+  pokaz_bledy()
+  odswiez_ekran()
 
 def ekran_powitalny():
   czy_petla = True
@@ -75,26 +90,6 @@ def ekran_powitalny():
         czy_petla = False
   pygame.mixer.music.stop()
 
-def wyswietl_stan():
-  wyswietlacz.fill(KOLOR_CZARNY)
-  wyswietlacz.blit(dane.img_tlo,(0,0))
-  odpowiedzi=dane.rundy[stan.ktora_runda].odpowiedzi
-  # odpowiedzi
-  for indeks,odpowiedz in enumerate(odpowiedzi):
-    y=POLOZENIE_Y0+indeks*ODSTEP_Y
-    pokaz_tekst(tresc=str(indeks+1), xy=(POLOZENIE_LP_X,y))
-    pokaz_tekst(tresc=odpowiedz.tresc if indeks in stan.widoczne_odpowiedzi else '.................................', xy=(POLOZENIE_HASLO_X,y))
-    pokaz_tekst(tresc=str(odpowiedz.punkty) if indeks in stan.widoczne_odpowiedzi else '--', xy=(POLOZENIE_PUNKTY_X,y))
-  # suma punktów w bieżącej rundzie
-  pokaz_tekst(tresc='SUMA',xy=(POLOZENIE_SUMA_X,POLOZENIE_SUMA_Y))
-  pokaz_tekst(tresc=str(stan.punkty_biezace),xy=(POLOZENIE_PUNKTY_X,POLOZENIE_SUMA_Y))
-  # punkty drużyn
-  pokaz_tekst(tresc=str(stan.liczniki_punktow[0]),xy=POLOZENIE_PUNKTY_DRUZYNA_0,czcionka=dane.fnt_punkty_druzyn)
-  pokaz_tekst(tresc=str(stan.liczniki_punktow[1]),xy=POLOZENIE_PUNKTY_DRUZYNA_1,czcionka=dane.fnt_punkty_druzyn)
-  # błędy
-  pokaz_bledy(ktora_druzyna=0)
-  pokaz_bledy(ktora_druzyna=1)
-  odswiez_ekran()
 
 def rundy_zwykle():
   wyswietl_stan()

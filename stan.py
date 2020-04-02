@@ -24,7 +24,7 @@ class Stan:
     self.koniec_rundy=False
 
   def poprawna_odpowiedz(self,numer_odpowiedzi):
-    if not (len(self.widoczne_odpowiedzi) > 0 and self.biezaca_druzyna is None):
+    if self.koniec_rundy or not (self.widoczne_odpowiedzi and self.biezaca_druzyna is None):
       if numer_odpowiedzi < liczba_odpowiedzi(self.ktora_runda) and numer_odpowiedzi not in self.widoczne_odpowiedzi:
         self.zapisz_stan()
         self.widoczne_odpowiedzi.append(numer_odpowiedzi)
@@ -54,10 +54,12 @@ class Stan:
       self.liczniki_punktow[numer_druzyny_wygrywajacej]+=self.punkty_biezace
       self.punkty_biezace=0
       self.koniec_rundy=True
+      self.biezaca_druzyna=None
 
   def ustaw_biezaca_druzyne(self,nr_druzyny):
-    self.zapisz_stan()
-    self.biezaca_druzyna=nr_druzyny
+    if not self.koniec_rundy and self.widoczne_odpowiedzi:
+      self.zapisz_stan()
+      self.biezaca_druzyna=nr_druzyny
 
   def nowa_runda(self,numer_rundy):
     self.zapisz_stan()

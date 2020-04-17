@@ -7,13 +7,13 @@ from konfiguracja import dane, wyswietlacz, odswiez_ekran
 from stan import stan
 
 # TODO:
+# - po 3 błędach pierwsza poprawna odpowiedź kończy rozgrywkę
+# - mnożnik punktów w rundach
 # - dodać dźwięki
-# - dodać X-y za błędy w formie obrazków
-# - ładne tło i ustawienie współrzędnych obiektów
-# - podświetlać aktywną drużynę
 # - wyświetlać aktualne pytanie i numer rundy (opcjonalnie - opcja w config.yml? wyświetlane na klawisz?)
 # - runda finałowa
 # - przenieść do konfiguracji klawisze
+
 
 KOLOR_CZARNY=(0,0,0)
 
@@ -21,10 +21,10 @@ KLAWISZE_ODPOWIEDZI=[K_1,K_2,K_3,K_4,K_5,K_6,K_7,K_8,K_9]
 KLAWISZ_KONIEC_GRY=K_ESCAPE
 KLAWISZ_NASTEPNA_RUNDA=K_RIGHT
 KLAWISZ_POPRZEDNIA_RUNDA=K_LEFT
-KLAWISZ_DRUZYNA_0=K_a
-KLAWISZ_DRUZYNA_1=K_s
+KLAWISZ_DRUZYNA_0=K_COMMA
+KLAWISZ_DRUZYNA_1=K_PERIOD
 KLAWISZ_BLAD=K_b
-KLAWISZ_COFNIJ_CZYNNOSC=K_z
+KLAWISZ_COFNIJ_CZYNNOSC=K_BACKSPACE
 
 def biezace_odpowiedzi():
   return dane.rundy[stan.ktora_runda].odpowiedzi
@@ -40,9 +40,12 @@ def pokaz_punkty():
   for ktora_druzyna in [0,1]:
     pokaz_tekst(tresc=str(stan.liczniki_punktow[ktora_druzyna]),xy=dane.crd_punkty_druzyn[ktora_druzyna],czcionka=dane.fnt_punkty_druzyn)
 
-def pokaz_aktywna_druzyne():
+def pokaz_druzyny():
+  for ktora_druzyna in [0,1]:
+    pokaz_tekst(tresc=dane.nazwy_druzyn[ktora_druzyna],xy=dane.crd_nazwy_druzyn[ktora_druzyna])
+
   if stan.biezaca_druzyna is not None:
-    pokaz_tekst(tresc=dane.nazwy_druzyn[stan.biezaca_druzyna],xy=dane.crd_nazwy_druzyn[stan.biezaca_druzyna])
+    wyswietlacz.blit(dane.aktywna_druzyna,dane.crd_aktywna_druzyna[stan.biezaca_druzyna])
 
 def pokaz_odpowiedzi():
   odpowiedzi=dane.rundy[stan.ktora_runda].odpowiedzi
@@ -63,10 +66,10 @@ def pokaz_bledy():
     polozenie=list(dane.crd_bledy[ktora_druzyna])
     if czy_duzy_blad:
       if stan.liczniki_bledow[ktora_druzyna] > 0:
-        pokaz_tekst('TODO',tuple(polozenie))
+        wyswietlacz.blit(dane.blad_duzy,tuple(polozenie))
     else:
       for i in range(stan.liczniki_bledow[ktora_druzyna]):
-        pokaz_tekst('X',tuple(polozenie))
+        wyswietlacz.blit(dane.blad_maly,tuple(polozenie))
         polozenie[1]+=dane.crd_bledy_odstep
 
 def wyswietl_stan():
@@ -74,7 +77,7 @@ def wyswietl_stan():
   wyswietlacz.blit(dane.img_tlo,(0,0))
   pokaz_odpowiedzi()
   pokaz_punkty()
-  pokaz_aktywna_druzyne()
+  pokaz_druzyny()
   pokaz_bledy()
   odswiez_ekran()
 
@@ -101,9 +104,11 @@ def rundy_zwykle():
         if event.key ==  KLAWISZ_KONIEC_GRY:
           koniec()
         elif event.key == KLAWISZ_DRUZYNA_0:
-          stan.ustaw_biezaca_druzyne(0)
+          if stan.biezaca_druzyna is None:
+            stan.ustaw_biezaca_druzyne(0)
         elif event.key == KLAWISZ_DRUZYNA_1:
-          stan.ustaw_biezaca_druzyne(1)
+          if stan.biezaca_druzyna is None:
+            stan.ustaw_biezaca_druzyne(1)
         elif event.key in KLAWISZE_ODPOWIEDZI:
           numer_odpowiedzi = KLAWISZE_ODPOWIEDZI.index(event.key)
           stan.poprawna_odpowiedz(numer_odpowiedzi)

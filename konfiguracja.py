@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import pygame, sys, yaml, pygame.freetype
+import pygame, sys, yaml
 from pygame.locals import *
 from os.path import normpath
 
@@ -34,8 +34,14 @@ class Dane:
     sekcja=dane_z_yaml['obrazy']
     (self.img_ekran_powitalny,
      self.img_tlo,
+     self.blad_maly,
+     self.blad_duzy,
+     self.aktywna_druzyna,
     ) = (pygame.image.load(normpath(sekcja['ekran_powitalny'])),
          pygame.image.load(normpath(sekcja['tlo'])),
+         pygame.image.load(normpath(sekcja['blad_maly'])),
+         pygame.image.load(normpath(sekcja['blad_duzy'])),
+         pygame.image.load(normpath(sekcja['aktywna_druzyna'])),
         )
 
     #dźwięki
@@ -66,7 +72,7 @@ class Dane:
 
     #współrzędne
     sekcja=dane_z_yaml['wspolrzedne']
-    self.crd_bledy,self.crd_punkty_druzyn,self.crd_nazwy_druzyn=[None,None],[None,None],[None,None]
+    self.crd_bledy,self.crd_punkty_druzyn,self.crd_nazwy_druzyn,self.crd_aktywna_druzyna=[None,None],[None,None],[None,None],[None,None]
 
     (self.crd_odpowiedzi_lp,
      self.crd_odpowiedzi_haslo,
@@ -81,6 +87,8 @@ class Dane:
      self.crd_punkty_suma_punkty,
      self.crd_nazwy_druzyn[0],
      self.crd_nazwy_druzyn[1],
+     self.crd_aktywna_druzyna[0],
+     self.crd_aktywna_druzyna[1],
     ) = (tuple(sekcja['odpowiedzi']['lp']),
          tuple(sekcja['odpowiedzi']['haslo']),
          tuple(sekcja['odpowiedzi']['punkty']),
@@ -94,6 +102,8 @@ class Dane:
          tuple(sekcja['punkty']['suma_punkty']),
          tuple(sekcja['nazwy_druzyn']['druzyna_0']),
          tuple(sekcja['nazwy_druzyn']['druzyna_1']),
+         tuple(sekcja['aktywna_druzyna']['druzyna_0']),
+         tuple(sekcja['aktywna_druzyna']['druzyna_1']),
         )
 
     #teksty

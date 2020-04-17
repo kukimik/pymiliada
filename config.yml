@@ -3,6 +3,9 @@ rozmiar_ekranu: [800,600]
 obrazy:
   ekran_powitalny: dane/ekran_powitalny.png
   tlo: dane/tlo.png
+  blad_maly: dane/blad_maly.png
+  blad_duzy: dane/blad_duzy.png
+  aktywna_druzyna: dane/aktywna_druzyna.png
 
 dzwieki:
   bledna_odpowiedz: dane/bledna_odpowiedz.wav
@@ -13,27 +16,27 @@ muzyka:
 
 czcionki:
   podstawowa:
-    plik: dane/bpdots.squares.otf
+    plik: dane/familiada.ttf
     rozmiar: 40
-    kolor: [70,230,100]
+    kolor: [208,255,94]
 
   punkty_druzyn:
-    plik: dane/bpdots.squares.otf
+    plik: dane/familiada.ttf
     rozmiar: 60
-    kolor: [70,230,100]
+    kolor: [208,255,94]
 
 pytania: dane/pytania.yml
 
 wspolrzedne:
   odpowiedzi:
-    lp: [235,100]
-    haslo: [275,100]
-    punkty: [960,100]
+    lp: [285,100]
+    haslo: [325,100]
+    punkty: [920,100]
     odstep: 70
 
   bledy:
-    druzyna_0: [40,100]
-    druzyna_1: [1070,100]
+    druzyna_0: [210,100]
+    druzyna_1: [1005,100]
     odstep: 150
 
   punkty:
@@ -46,7 +49,11 @@ wspolrzedne:
     druzyna_0: [55,835]
     druzyna_1: [875,835]
 
+  aktywna_druzyna:
+    druzyna_0: [25,805]
+    druzyna_1: [845,805]
+
 teksty:
   suma: SUMA
-  ukryte_haslo: ............................
-  ukryte_punkty: --
+  ukryte_haslo: .............................
+  ukryte_punkty: __

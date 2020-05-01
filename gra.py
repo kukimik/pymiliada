@@ -1,13 +1,14 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import pygame, pygame.freetype, sys
+import pygame, pygame.freetype, pygame.mixer, sys
 from pygame.locals import *
 from konfiguracja import dane, wyswietlacz, odswiez_ekran
 from stan import stan
 
 # TODO:
 # - po 3 błędach pierwsza poprawna odpowiedź kończy rozgrywkę
+# - dwie poprawne odpowiedzi możliwe przed wyznaczeniem drużyny
 # - mnożnik punktów w rundach
 # - dodać dźwięki
 # - wyświetlać aktualne pytanie i numer rundy (opcjonalnie - opcja w config.yml? wyświetlane na klawisz?)

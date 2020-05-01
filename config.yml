@@ -8,11 +8,11 @@ obrazy:
   aktywna_druzyna: dane/aktywna_druzyna.png
 
 dzwieki:
-  bledna_odpowiedz: dane/bledna_odpowiedz.wav
-  dobra_odpowiedz: dane/dobra_odpowiedz.wav
+  blad: dane/blad.ogg
+  dobra_odpowiedz: dane/dobra_odpowiedz.ogg
 
 muzyka:
-  muzyka_na_start: dane/muzyka_na_start.mp3
+  muzyka_na_start: dane/muzyka_na_start.ogg
 
 czcionki:
   podstawowa:

@@ -8,12 +8,14 @@ from stan import stan
 
 # TODO:
 # - po 3 błędach pierwsza poprawna odpowiedź kończy rozgrywkę
-# - dwie poprawne odpowiedzi możliwe przed wyznaczeniem drużyny
-# - mnożnik punktów w rundach
-# - dodać dźwięki
-# - wyświetlać aktualne pytanie i numer rundy (opcjonalnie - opcja w config.yml? wyświetlane na klawisz?)
+# - początek rundy:
+#   - dwie poprawne odpowiedzi możliwe przed wyznaczeniem drużyny;
+#   - pierwsze odpowiedź najwyżej punktowana - nic dalej się nie dzieje;
+#   - nie pozwalać na wiele błędów (dźwięki!) jeśli padła jakaś poprawna opdowiedź (?);
 # - runda finałowa
 # - przenieść do konfiguracji klawisze
+# ? mnożnik punktów w rundach
+# ? wyświetlać aktualne pytanie i numer rundy (opcjonalnie - opcja w config.yml? wyświetlane na klawisz?)
 
 
 KOLOR_CZARNY=(0,0,0)
@@ -73,6 +75,13 @@ def pokaz_bledy():
         wyswietlacz.blit(dane.blad_maly,tuple(polozenie))
         polozenie[1]+=dane.crd_bledy_odstep
 
+def zagraj_dzwiek_wydarzenia():
+  # traktujemy dźwięki jak muzykę, bo Sound.play() z nieznanej przyczyny wywala program (Segmentation fault)
+  if stan.dzwiek_wydarzenia is not None:
+    pygame.mixer.music.load(getattr(dane, stan.dzwiek_wydarzenia))
+    pygame.mixer.music.play()
+    stan.dzwiek_wydarzenia=None
+
 def wyswietl_stan():
   wyswietlacz.fill(KOLOR_CZARNY)
   wyswietlacz.blit(dane.img_tlo,(0,0))
@@ -81,6 +90,7 @@ def wyswietl_stan():
   pokaz_druzyny()
   pokaz_bledy()
   odswiez_ekran()
+  zagraj_dzwiek_wydarzenia()
 
 def ekran_powitalny():
   czy_petla = True
@@ -93,7 +103,6 @@ def ekran_powitalny():
       if event.type == pygame.KEYDOWN:
         czy_petla = False
   pygame.mixer.music.stop()
-
 
 def rundy_zwykle():
   wyswietl_stan()

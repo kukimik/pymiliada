@@ -47,10 +47,10 @@ class Dane:
     #dźwięki
     #Traktujemy je jako muzykę, nie dźwięki, gdyż Sound.play() kończy się Segmentation fault. Nie wiem dlaczego.
     sekcja=dane_z_yaml['dzwieki']
-    (self.snd_blad,
-     self.snd_dobra_odpowiedz
-    ) = (normpath(sekcja['blad']),#pygame.mixer.Sound(normpath(sekcja['blad'])),
-         normpath(sekcja['dobra_odpowiedz']),#pygame.mixer.Sound(normpath(sekcja['dobra_odpowiedz'])),
+    (self.snd_bledna_odpowiedz,
+     self.snd_poprawna_odpowiedz
+    ) = (normpath(sekcja['bledna_odpowiedz']),#pygame.mixer.Sound(normpath(sekcja['bledna_odpowiedz'])),
+         normpath(sekcja['poprawna_odpowiedz']),#pygame.mixer.Sound(normpath(sekcja['poprawna_odpowiedz'])),
         )
 
     #muzyka

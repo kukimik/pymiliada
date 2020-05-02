@@ -6,8 +6,8 @@ import copy
 
 MAX_POZIOMY_UNDO=8000
 
-BLEDNA_ODPOWIEDZ='bledna_odpowiedz'
-POPRAWNA_ODPOWIEDZ='poprawna_odpowiedz'
+BLEDNA_ODPOWIEDZ='snd_bledna_odpowiedz'
+POPRAWNA_ODPOWIEDZ='snd_poprawna_odpowiedz'
 NOWA_RUNDA='nowa_runda'
 
 MAX_LICZBA_BLEDOW=3
@@ -20,7 +20,7 @@ class Stan:
     self.liczniki_punktow=[0,0]
     self.widoczne_odpowiedzi=[]
     self.biezaca_druzyna=None
-    self.wydarzenie=None
+    self.dzwiek_wydarzenia=None
     self.koniec_rundy=False
 
   def poprawna_odpowiedz(self,numer_odpowiedzi):
@@ -28,7 +28,7 @@ class Stan:
       if numer_odpowiedzi < liczba_odpowiedzi(self.ktora_runda) and numer_odpowiedzi not in self.widoczne_odpowiedzi:
         self.zapisz_stan()
         self.widoczne_odpowiedzi.append(numer_odpowiedzi)
-        self.wydarzenie=POPRAWNA_ODPOWIEDZ
+        self.dzwiek_wydarzenia=POPRAWNA_ODPOWIEDZ
         if not self.koniec_rundy:
           self.punkty_biezace+=liczba_punktow(self.ktora_runda,numer_odpowiedzi)
           if self.biezaca_druzyna is not None and len(self.widoczne_odpowiedzi) == liczba_odpowiedzi(self.ktora_runda):
@@ -47,7 +47,7 @@ class Stan:
           self.liczniki_bledow[self.biezaca_druzyna]+=1
           if self.liczniki_bledow[self.biezaca_druzyna] == MAX_LICZBA_BLEDOW:
             self.biezaca_druzyna=przeciwna_druzyna
-      self.wydarzenie=BLEDNA_ODPOWIEDZ
+      self.dzwiek_wydarzenia=BLEDNA_ODPOWIEDZ
 
   def zakoncz_runde(self,numer_druzyny_wygrywajacej):
     if not self.koniec_rundy:
@@ -70,7 +70,6 @@ class Stan:
     self.widoczne_odpowiedzi=[]
     self.biezaca_druzyna=None
     self.koniec_rundy=False
-    self.wydarzenie=NOWA_RUNDA
 
   def kolejna_runda(self):
     self.nowa_runda(self.ktora_runda+1)
@@ -80,6 +79,7 @@ class Stan:
 
   def zapisz_stan(self):
     poprzednie_stany.append(copy.deepcopy(vars(stan)))
+    poprzednie_stany[-1]['dzwiek_wydarzenia']=None
     if len(poprzednie_stany) > MAX_POZIOMY_UNDO:
       del poprzednie_stany[0]
 

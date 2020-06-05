@@ -7,16 +7,11 @@ from konfiguracja import dane, wyswietlacz, odswiez_ekran
 from stan import stan
 
 # TODO:
-# - po 3 błędach pierwsza poprawna odpowiedź kończy rozgrywkę
-# - początek rundy:
-#   - dwie poprawne odpowiedzi możliwe przed wyznaczeniem drużyny;
-#   - pierwsze odpowiedź najwyżej punktowana - nic dalej się nie dzieje;
-#   - nie pozwalać na wiele błędów (dźwięki!) jeśli padła jakaś poprawna opdowiedź (?);
+# - mnożnik punktów w rundach
 # - runda finałowa
-# - przenieść do konfiguracji klawisze
-# ? mnożnik punktów w rundach
+# - muzyka przed początkiem finału
 # ? wyświetlać aktualne pytanie i numer rundy (opcjonalnie - opcja w config.yml? wyświetlane na klawisz?)
-
+# ? przenieść do konfiguracji klawisze
 
 KOLOR_CZARNY=(0,0,0)
 
@@ -77,10 +72,13 @@ def pokaz_bledy():
 
 def zagraj_dzwiek_wydarzenia():
   # traktujemy dźwięki jak muzykę, bo Sound.play() z nieznanej przyczyny wywala program (Segmentation fault)
-  if stan.dzwiek_wydarzenia is not None:
-    pygame.mixer.music.load(getattr(dane, stan.dzwiek_wydarzenia))
-    pygame.mixer.music.play()
-    stan.dzwiek_wydarzenia=None
+  if stan.dzwieki_wydarzen:
+    for snd in stan.dzwieki_wydarzen:
+      pygame.mixer.music.load(getattr(dane, snd))
+      pygame.mixer.music.play()
+      while pygame.mixer.music.get_busy():
+        pygame.time.wait(50)
+    stan.dzwieki_wydarzen=[]
 
 def wyswietl_stan():
   wyswietlacz.fill(KOLOR_CZARNY)

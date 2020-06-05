@@ -10,6 +10,8 @@ obrazy:
 dzwieki:
   bledna_odpowiedz: dane/bledna_odpowiedz.ogg
   poprawna_odpowiedz: dane/poprawna_odpowiedz.ogg
+  koniec_rundy: dane/koniec_rundy.ogg
+  nowa_runda: dane/nowa_runda.ogg
 
 muzyka:
   muzyka_na_start: dane/muzyka_na_start.ogg

@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from konfiguracja import liczba_odpowiedzi, liczba_punktow
+from konfiguracja import liczba_odpowiedzi, liczba_punktow, mnoznik
 import copy
 
 MAX_POZIOMY_UNDO=8000
@@ -58,7 +58,7 @@ class Stan:
 
   def zakoncz_runde(self,numer_druzyny_wygrywajacej):
     if not self.koniec_rundy:
-      self.liczniki_punktow[numer_druzyny_wygrywajacej]+=self.punkty_biezace
+      self.liczniki_punktow[numer_druzyny_wygrywajacej]+=self.punkty_przemnozone()
       self.punkty_biezace=0
       self.koniec_rundy=True
       self.biezaca_druzyna=None
@@ -97,6 +97,9 @@ class Stan:
       opis_stanu=poprzednie_stany.pop()
       for n, v in opis_stanu.items():
         setattr(self, n, v)
+
+  def punkty_przemnozone(self):
+    return mnoznik(self.ktora_runda) * self.punkty_biezace
 
 stan=Stan()
 poprzednie_stany=[]

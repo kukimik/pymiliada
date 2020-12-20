@@ -19,8 +19,9 @@ class Odpowiedz:
     self.punkty=punkty
 
 class Runda:
-  def __init__(self,pytanie,odpowiedzi):
+  def __init__(self,pytanie,mnoznik,odpowiedzi):
     self.pytanie=pytanie
+    self.mnoznik=mnoznik
     self.odpowiedzi=odpowiedzi
 
 class Dane:
@@ -88,6 +89,7 @@ class Dane:
      self.crd_bledy_odstep,
      self.crd_punkty_druzyn[0],
      self.crd_punkty_druzyn[1],
+     self.crd_punkty_przemnozone,
      self.crd_punkty_suma_napis,
      self.crd_punkty_suma_punkty,
      self.crd_nazwy_druzyn[0],
@@ -103,6 +105,7 @@ class Dane:
                sekcja['bledy']['odstep'],
          tuple(sekcja['punkty']['druzyna_0']),
          tuple(sekcja['punkty']['druzyna_1']),
+         tuple(sekcja['punkty']['punkty_przemnozone']),
          tuple(sekcja['punkty']['suma_napis']),
          tuple(sekcja['punkty']['suma_punkty']),
          tuple(sekcja['nazwy_druzyn']['druzyna_0']),
@@ -126,6 +129,7 @@ class Dane:
     self.nazwy_druzyn=(rundy_dane_z_yaml['nazwy_druzyn']['druzyna_0'],
                        rundy_dane_z_yaml['nazwy_druzyn']['druzyna_1'])
     self.rundy=[ Runda(pytanie=runda['pytanie'], \
+                       mnoznik=runda['mnoznik'], \
                        odpowiedzi=[ Odpowiedz(tresc=odpowiedz['odp'], punkty=odpowiedz['pkt']) \
                                     for odpowiedz in runda['odpowiedzi'] ] ) \
                  for runda in rundy_dane_z_yaml['rundy'] ]
@@ -135,6 +139,9 @@ def liczba_odpowiedzi(numer_rundy):
 
 def liczba_punktow(numer_rundy,numer_odpowiedzi):
   return dane.rundy[numer_rundy].odpowiedzi[numer_odpowiedzi].punkty
+
+def mnoznik(numer_rundy):
+  return dane.rundy[numer_rundy].mnoznik
 
 def stworz_ekran(rozmiar=None):
   if rozmiar is None:

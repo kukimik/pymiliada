@@ -5,6 +5,7 @@ nazwy_druzyn:
 rundy:
 
   - pytanie: Przedmioty w szkole
+    mnoznik: 1
     odpowiedzi:
       - odp: Matematyka
         pkt: 100
@@ -26,6 +27,7 @@ rundy:
         pkt: 1
 
   - pytanie: Zwierzątko
+    mnoznik: 1
     odpowiedzi:
       - odp: Pies
         pkt: 80
@@ -35,6 +37,7 @@ rundy:
         pkt: 5
 
   - pytanie: Więcej niż jedno zwierzę.
+    mnoznik: 2
     odpowiedzi:
       - odp: Owca
         pkt: 99
@@ -42,6 +45,7 @@ rundy:
         pkt: 87
 
   - pytanie: Po wodzie pływa i kaczka się nazywa.
+    mnoznik: 3
     odpowiedzi:
       - odp: Gęś
         pkt: 120

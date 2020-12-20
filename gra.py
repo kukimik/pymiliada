@@ -34,6 +34,8 @@ def pokaz_punkty():
   # suma punktów w bieżącej rundzie
   pokaz_tekst(tresc=dane.txt_suma,xy=dane.crd_punkty_suma_napis)
   pokaz_tekst(tresc=str(stan.punkty_biezace),xy=dane.crd_punkty_suma_punkty)
+  # suma punktów przemnożona przez mnożnik
+  pokaz_tekst(tresc=str(stan.punkty_przemnozone()), xy=dane.crd_punkty_przemnozone, czcionka=dane.fnt_punkty_druzyn)
   # punkty drużyn
   for ktora_druzyna in [0,1]:
     pokaz_tekst(tresc=str(stan.liczniki_punktow[ktora_druzyna]),xy=dane.crd_punkty_druzyn[ktora_druzyna],czcionka=dane.fnt_punkty_druzyn)

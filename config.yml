@@ -19,7 +19,7 @@ muzyka:
 czcionki:
   podstawowa:
     plik: dane/familiada.ttf
-    rozmiar: 40
+    rozmiar: 30
     kolor: [208,255,94]
 
   punkty_druzyn:
@@ -31,31 +31,32 @@ pytania: dane/pytania.yml
 
 wspolrzedne:
   odpowiedzi:
-    lp: [285,100]
-    haslo: [325,100]
-    punkty: [920,100]
-    odstep: 70
+    lp: [333,245]
+    haslo: [373,245]
+    punkty: [900,245]
+    odstep: 50
 
   bledy:
-    druzyna_0: [210,100]
-    druzyna_1: [1005,100]
+    druzyna_0: [262,245]
+    druzyna_1: [975,245]
     odstep: 150
 
   punkty:
-    druzyna_0: [35,355]
-    druzyna_1: [1110,355]
-    suma_napis: [800,720]
-    suma_punkty: [950,720]
+    druzyna_0: [40,435]
+    druzyna_1: [1110,435]
+    punkty_przemnozone: [575,50]
+    suma_napis: [770,690]
+    suma_punkty: [900,690]
 
   nazwy_druzyn:
-    druzyna_0: [55,835]
-    druzyna_1: [875,835]
+    druzyna_0: [20,955]
+    druzyna_1: [905,955]
 
   aktywna_druzyna:
-    druzyna_0: [25,805]
-    druzyna_1: [845,805]
+    druzyna_0: [-5,915]
+    druzyna_1: [878,915]
 
 teksty:
   suma: SUMA
-  ukryte_haslo: .............................
+  ukryte_haslo: ................................
   ukryte_punkty: __

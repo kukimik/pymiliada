@@ -54,11 +54,10 @@ Modyfikując ten plik oraz obrazki/dźwięki/czcionki można dostosować wygląd
 Plik zawiera dane, które należy dostosować przed każdą prowadzoną rozgrywką:
 
 * nazwy drużyn;
-* kolejne pytania, odpowiedzi i punkty przysługujące za danę odpowiedź;
+* kolejne pytania, mnożniki punktów w danej rundzie, odpowiedzi i punkty przysługujące za daną odpowiedź;
 
 ## TODO
 
-* mnożnik punktów w rundach ("W n-tej rundzie liczbę punktów mnożymy przez x.") i wyświetlacz z przemnożoną liczbą punktów nad tablicą z odpowiedziami;
 * runda finałowa;
 * klawisz pozwalający wyświetlić (np. na pasku u dołu ekranu) aktualne pytanie;
 * konfigurowalne klawisze (?).
